@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}Забаненные команды - Антимаклауд{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg">
+                <div class="card-header bg-danger bg-gradient text-white py-3" style="border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="card-title mb-0" style="font-size:2.1rem; font-weight:800; text-shadow: 0 2px 8px rgba(0,0,0,0.25);">
+                            <i class="fas fa-ban me-2"></i>Забаненные команды
+                        </h2>
+                        <span class="badge bg-light text-dark">
+                            <i class="fas fa-hashtag me-1"></i>{{ banned_teams|length }} команд
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <form method="get" class="mb-4">
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-search text-muted"></i>
+                            </span>
+                            <input type="text" name="search" class="form-control" placeholder="Поиск по названию команды" value="{{ search_query|default:'' }}">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-search me-2"></i>Поиск
+                            </button>
+                        </div>
+                    </form>
+                    {% if banned_teams %}
+                    <div class="row g-4">
+                        {% for ban in banned_teams %}
+                        <div class="col-md-6">
+                            <div class="card h-100 border-danger shadow-sm hover-shadow">
+                                <div class="card-header bg-danger bg-opacity-10 py-3">
+                                    <h5 class="card-title mb-0 text-danger">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>{{ ban.team.name }}
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                        <h6 class="text-muted mb-2">
+                                            <i class="fas fa-ban me-2"></i>Причина бана
+                                        </h6>
+                                        <p class="mb-0">{{ ban.reason.name }}</p>
+                                        {% if ban.description %}
+                                        <p class="text-muted mt-2 mb-0">{{ ban.description }}</p>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <h6 class="text-muted mb-2">
+                                            <i class="fas fa-calendar-alt me-2"></i>Сроки бана
+                                        </h6>
+                                        <div class="d-flex flex-column">
+                                            <span class="mb-1">
+                                                <i class="fas fa-clock me-2"></i>
+                                                Забанен: {{ ban.ban_date|date:"d.m.Y" }}
+                                            </span>
+                                            {% if ban.expiry_date %}
+                                            <span>
+                                                <i class="fas fa-hourglass-end me-2"></i>
+                                                Действует до: {{ ban.expiry_date|date:"d.m.Y" }}
+                                            </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    {% if ban.organizer %}
+                                    <div class="mb-4">
+                                        <h6 class="text-muted mb-2">
+                                            <i class="fas fa-user-shield me-2"></i>Организатор
+                                        </h6>
+                                        <p class="mb-0">{{ ban.organizer.username }}</p>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    {% if user.is_authenticated and user.role == 'ORGANIZER' %}
+                                    <div class="text-end">
+                                        <a href="{% url 'unban_team' ban.id %}" class="btn btn-success">
+                                            <i class="fas fa-check-circle me-2"></i>Разбанить
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                        <h4 class="text-muted">Нет забаненных команд</h4>
+                        <p class="text-muted">Все команды активны</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.hover-shadow {
+    transition: all 0.3s ease;
+}
+.hover-shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+}
+</style>
+{% endblock %} 

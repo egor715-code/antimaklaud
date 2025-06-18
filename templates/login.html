@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Вход - Антимаклауд{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-lg mt-4">
+            <div class="card-header bg-gradient text-white py-3">
+                <h2 class="card-title text-center mb-0">
+                    <i class="fas fa-sign-in-alt me-2"></i>Вход в аккаунт
+                </h2>
+            </div>
+            <div class="card-body p-4">
+                {% if messages %}
+                <div class="messages mb-4">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>{{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <form method="post" novalidate class="needs-validation">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="username" class="form-label">
+                            <i class="fas fa-user me-2"></i>Имя пользователя
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-user text-muted"></i>
+                            </span>
+                            <input type="text" name="username" id="username" class="form-control" required
+                                   placeholder="Введите имя пользователя">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock me-2"></i>Пароль
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-lock text-muted"></i>
+                            </span>
+                            <input type="password" name="password" id="password" class="form-control" required
+                                   placeholder="Введите пароль">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100 mb-4">
+                        <i class="fas fa-sign-in-alt me-2"></i>Войти
+                    </button>
+                </form>
+                
+                <div class="text-center">
+                    <p class="text-muted mb-3">Нет аккаунта?</p>
+                    <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg w-100">
+                        <i class="fas fa-user-plus me-2"></i>Зарегистрироваться
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

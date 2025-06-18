@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Профиль - Антимаклауд{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg mt-4">
+            {% if user.is_authenticated %}
+                <div class="card-header bg-primary bg-gradient text-white py-3" style="border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
+                    <h2 class="card-title text-center mb-0" style="font-size:2.1rem; font-weight:800; text-shadow: 0 2px 8px rgba(0,0,0,0.25);">
+                        <i class="fas fa-user-circle me-2"></i>Профиль
+                    </h2>
+                </div>
+                <div class="card-body p-4">
+                    {% if user.chevron_photo %}
+                    <div class="text-center mb-4">
+                        <div class="position-relative d-inline-block">
+                            <img src="{{ user.chevron_photo.url }}" alt="Шеврон" 
+                                 class="img-fluid rounded-circle shadow" 
+                                 style="max-height: 200px; border: 4px solid white;">
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="profile-info">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 bg-light">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-muted mb-3">
+                                            <i class="fas fa-user me-2"></i>Основная информация
+                                        </h5>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-3">
+                                                <small class="text-muted d-block">Имя пользователя</small>
+                                                <strong>{{ user.username }}</strong>
+                                            </li>
+                                            <li class="mb-3">
+                                                <small class="text-muted d-block">Email</small>
+                                                <strong>{{ user.email }}</strong>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 bg-light">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-muted mb-3">
+                                            <i class="fas fa-info-circle me-2"></i>Дополнительная информация
+                                        </h5>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="mb-3">
+                                                <small class="text-muted d-block">Роль</small>
+                                                <strong>{{ user.get_role_display }}</strong>
+                                            </li>
+                                            <li class="mb-3">
+                                                <small class="text-muted d-block">Телефон</small>
+                                                <strong>{{ user.phone|default:'—' }}</strong>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{% url 'logout' %}" class="btn btn-danger btn-lg">
+                            <i class="fas fa-sign-out-alt me-2"></i>Выйти
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="card-header bg-primary bg-gradient text-white py-3" style="border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
+                    <h2 class="card-title text-center mb-0" style="font-size:2.1rem; font-weight:800; text-shadow: 0 2px 8px rgba(0,0,0,0.25);">
+                        <i class="fas fa-user-circle me-2"></i>Профиль
+                    </h2>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-lock fa-3x text-muted mb-3"></i>
+                        <p class="lead">Для просмотра профиля необходимо войти в аккаунт</p>
+                    </div>
+                    <div class="d-grid gap-3">
+                        <a href="{% url 'login' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Войти в аккаунт
+                        </a>
+                        <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Зарегистрироваться
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

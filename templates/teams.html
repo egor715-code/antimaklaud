@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Команды - Антимаклауд{% endblock %}
+
+{% block content %}
+<h1>Список команд</h1>
+<ul>
+    {% for team in teams %}
+    <li><a href="{% url 'team_detail' team.id %}">{{ team.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %} 
