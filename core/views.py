@@ -31,6 +31,16 @@ def register(request):
             user = form.save()
             login(request, user)
             return redirect('home')
+            user = form.save(commit=False)
+            if user.role == User.Role.ORGANIZER:
+                user.is_active = False
+                user.save()
+                messages.info(request, 'Ваша заявка на регистрацию как организатора отправлена. Ожидайте подтверждения администратора.')
+                return redirect('login')
+            else:
+                user.save()
+                login(request, user)
+                return redirect('home')
     else:
         form = UserRegistrationForm()
     return render(request, 'register.html', {'form': form})
