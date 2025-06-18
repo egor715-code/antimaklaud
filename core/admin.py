@@ -4,6 +4,8 @@ from .models import *
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'role', 'team')
+    list_display = ('username', 'email', 'role', 'team', 'is_active')
+    list_filter = ('role', 'is_active')
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('role', 'phone', 'chevron_photo', 'team')}),
     )
